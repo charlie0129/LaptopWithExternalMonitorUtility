@@ -24,7 +24,7 @@ int MonitorCount()
 void Usage(void)
 {
     fprintf(stderr,
-            "Usage .\\LaptopWithExternalMonitorUtility EXTERNAL_DISPLAY_ID POWER_PLAN_GUID_MUTIPLE_MONITOR POWER_PLAN_GUID_SINGLE_MONITOR\n"
+            "Usage .\\LaptopWithExternalMonitorUtility DEVICE_ID DISPLAY_ID POWER_PLAN_GUID_MUTIPLE_MONITOR POWER_PLAN_GUID_SINGLE_MONITOR\n"
             "-h  Print this help\n"
             "-l  list all the displays and their IDs"
             "Note: you need to run this utility with elevated privileges.\n"
