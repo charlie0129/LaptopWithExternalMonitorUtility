@@ -21,7 +21,7 @@ int MonitorCount()
     return -1;
 }
 
-void usage(void)
+void Usage(void)
 {
     fprintf(stderr,
             "Usage .\\LaptopWithExternalMonitorUtility POWER_PLAN_GUID_MUTIPLE_MONITOR POWER_PLAN_GUID_SINGLE_MONITOR\n"
@@ -34,7 +34,7 @@ int main(int argc, char **argv)
 {
     if (argc != 3)
     {
-        usage();
+        Usage();
         return EXIT_FAILURE;
     }
 
@@ -62,7 +62,7 @@ int main(int argc, char **argv)
                 if (system((cmd + POWER_PLAN_GUID_MUTIPLE_MONITOR).c_str()) != EXIT_SUCCESS)
                 {
                     fputs("Error when setting power plans.\n", stderr);
-                    usage();
+                    Usage();
                     return EXIT_FAILURE;
                 }
                 else
@@ -79,7 +79,7 @@ int main(int argc, char **argv)
                 if (system((cmd + POWER_PLAN_GUID_SINGLE_MONITOR).c_str()) != EXIT_SUCCESS)
                 {
                     fputs("Error when setting power plans.\n", stderr);
-                    usage();
+                    Usage();
                     return EXIT_FAILURE;
                 }
                 else
