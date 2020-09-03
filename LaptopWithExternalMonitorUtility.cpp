@@ -25,7 +25,7 @@ void Usage(void)
     return;
 }
 
-void ListDisplays()
+void ListDisplays(void)
 {
     DISPLAY_DEVICE displayDevice;
     displayDevice.cb = sizeof(displayDevice);
