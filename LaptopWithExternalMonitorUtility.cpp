@@ -69,7 +69,7 @@ int main(int argc, char **argv)
 
         if (openFileStream.fail())
         {
-            fprintf(stderr, "Error opening configuration.\nIf you have not selected a external display, please select it first.\n");
+            fprintf(stderr, "Error opening configuration.\nIf you have not selected a external display or power plan, please select it first.\n");
             openFileStream.close();
             return EXIT_FAILURE;
         }
