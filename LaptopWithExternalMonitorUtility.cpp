@@ -13,13 +13,13 @@ enum class POWER_PLAN
 void Usage(void)
 {
     fprintf(stderr,
-            "\nUsage .\\LaptopWithExternalMonitorUtility [-h] | [-l] | [-s DEVICE_ID DISPLAY_ID] |\n"
-            "[--start POWER_PLAN_GUID_EXTERNAL_MONITOR POWER_PLAN_GUID_INTERNAL_MONITOR]\n\n"
+            "\nUsage .\\LaptopWithExternalMonitorUtility [-h] | [-l]\n"
+            "[-s DEVICE_ID DISPLAY_ID POWER_PLAN_GUID_EXTERNAL_MONITOR POWER_PLAN_GUID_INTERNAL_MONITOR]\n\n"
             "-h: Print this help\n"
             "-l: list all the displays and their IDs\n"
-            "-s <DEVICE_ID> <DISPLAY_ID>: select the external display\n"
-            "--start <POWER_PLAN_GUID_EXTERNAL_MONITOR> <POWER_PLAN_GUID_INTERNAL_MONITOR>:\n"
-            "       start this program\n\n"
+            "-s <DEVICE_ID> <DISPLAY_ID> <POWER_PLAN_GUID_EXTERNAL_MONITOR> <POWER_PLAN_GUID_INTERNAL_MONITOR>:\n"
+            "    select the external display and power plans.\n"
+            "no auguments: start this program\n\n"
             "Note: you need to run this utility with elevated privileges.\n\n"
            );
     return;
