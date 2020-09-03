@@ -20,7 +20,7 @@ void Usage(void)
             "-s <DEVICE_ID> <DISPLAY_ID> <POWER_PLAN_GUID_EXTERNAL_MONITOR> <POWER_PLAN_GUID_INTERNAL_MONITOR>:\n"
             "    select the external display and power plans.\n"
             "no auguments: start this program\n\n"
-            "Note: you need to run this utility with elevated privileges.\n\n"
+            "Note: you may need to run this utility with elevated privileges.\n\n"
            );
     return;
 }
