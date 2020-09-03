@@ -38,8 +38,11 @@ void ListDisplays()
 
         while (EnumDisplayDevices(deviceName.c_str(), monitorIndex, &displayDevice, 0))
         {
-            std::wcout << "Device ID: " << deviceIndex << ", Display ID: " << monitorIndex << ": "
-                       << displayDevice.DeviceName << ", " << displayDevice.DeviceString << ", " << displayDevice.DeviceID << "\n";
+            std::cout << "Device ID: " << deviceIndex
+                      << ", Display ID: " << monitorIndex
+                      << ": " << displayDevice.DeviceName
+                      << ", " << displayDevice.DeviceString
+                      << ", " << displayDevice.DeviceID << "\n";
             ++monitorIndex;
         }
 
@@ -51,7 +54,6 @@ void ListDisplays()
 
 int main(int argc, char **argv)
 {
-
     if (!strcmp(argv[1], "-l"))
     {
         ListDisplays();
@@ -66,7 +68,7 @@ int main(int argc, char **argv)
 
     if (!strcmp(argv[1], "-s"))
     {
-        if (argc != 4)
+        if (argc != 6)
         {
             Usage();
             return EXIT_FAILURE;
@@ -75,13 +77,19 @@ int main(int argc, char **argv)
         {
             const int DEVICE_INDEX = atoi(argv[2]);
             const int EXTERNAL_DISPLAY_INDEX = atoi(argv[3]);
+            const std::string POWER_PLAN_GUID_EXTERNAL_MONITOR{ argv[4] };
+            const std::string POWER_PLAN_GUID_INTERNAL_MONITOR{ argv[5] };
+
             DISPLAY_DEVICE externalDisplay;
             externalDisplay.cb = sizeof(externalDisplay);
             EnumDisplayDevices(0, DEVICE_INDEX, &externalDisplay, 0);
             const std::string DEVICE_NAME{ externalDisplay.DeviceName };
             EnumDisplayDevices(DEVICE_NAME.c_str(), EXTERNAL_DISPLAY_INDEX, &externalDisplay, 0);
             const std::string EXTERNAL_DISPLAY_ID{ externalDisplay.DeviceID };
+
             std::cout << "The external monitor you selected: " << EXTERNAL_DISPLAY_ID << std::endl;
+            std::cout << "External monitor power plan: " << POWER_PLAN_GUID_EXTERNAL_MONITOR << std::endl;
+            std::cout << "Internal monitor power plan: " << POWER_PLAN_GUID_INTERNAL_MONITOR << std::endl;
 
             std::ofstream saveFileStream{ "./config.cfg" };
 
@@ -93,17 +101,29 @@ int main(int argc, char **argv)
             }
             else
             {
-                saveFileStream << EXTERNAL_DISPLAY_ID;
-                puts("Configuration file has been saved.");
-                saveFileStream.close();
-            }
+                saveFileStream << EXTERNAL_DISPLAY_ID << std::endl
+                               << POWER_PLAN_GUID_EXTERNAL_MONITOR << std::endl
+                               << POWER_PLAN_GUID_INTERNAL_MONITOR << std::endl;
 
+                if (saveFileStream.fail())
+                {
+                    fprintf(stderr, "Error saving configuration.\n");
+                    saveFileStream.close();
+                    return EXIT_FAILURE;
+                }
+                else
+                {
+                    puts("Configuration file has been saved.");
+                    saveFileStream.close();
+                    return EXIT_SUCCESS;
+                }
+            }
         }
 
         return EXIT_SUCCESS;
     }
 
-    if (argc != 4)
+    if (argc != 2)
     {
         Usage();
         return EXIT_FAILURE;
@@ -114,9 +134,9 @@ int main(int argc, char **argv)
     char timebuf[128] = { 0 };
     POWER_PLAN currentPowerPlan = POWER_PLAN::UNDEF;
 
-    const std::string POWER_PLAN_GUID_EXTERNAL_MONITOR{ argv[2] };
-    const std::string POWER_PLAN_GUID_INTERNAL_MONITOR{ argv[3] };
-    std::string EXTERNAL_DISPLAY_ID;
+    std::string POWER_PLAN_GUID_EXTERNAL_MONITOR{};
+    std::string POWER_PLAN_GUID_INTERNAL_MONITOR{};
+    std::string EXTERNAL_DISPLAY_ID{};
 
     std::ifstream openFileStream{ "./config.cfg" };
 
@@ -128,9 +148,23 @@ int main(int argc, char **argv)
     }
     else
     {
-        openFileStream >> EXTERNAL_DISPLAY_ID;
-        std::cout << "The external monitor you have selected: " << EXTERNAL_DISPLAY_ID << std::endl;
-        openFileStream.close();
+        saveFileStream >> EXTERNAL_DISPLAY_ID
+                       >> POWER_PLAN_GUID_EXTERNAL_MONITOR
+                       >> POWER_PLAN_GUID_INTERNAL_MONITOR;
+
+        if (openFileStream.fail())
+        {
+            fprintf(stderr, "Error opening configuration.\n");
+            openFileStream.close();
+            return EXIT_FAILURE;
+        }
+        else
+        {
+            std::cout << "The external monitor you selected: " << EXTERNAL_DISPLAY_ID << std::endl;
+            std::cout << "External monitor power plan: " << POWER_PLAN_GUID_EXTERNAL_MONITOR << std::endl;
+            std::cout << "Internal monitor power plan: " << POWER_PLAN_GUID_INTERNAL_MONITOR << std::endl;
+            openFileStream.close();
+        }
     }
 
     // ShowWindow(GetConsoleWindow(), SW_HIDE); // hide console window
@@ -203,5 +237,5 @@ int main(int argc, char **argv)
         Sleep(1000);
     }
 
-    return EXIT_SUCCESS;
+    return EXIT_FAILURE;
 }
